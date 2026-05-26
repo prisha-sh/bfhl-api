@@ -259,4 +259,14 @@ Import the following JSON into Postman:
 
 ## ☁️ Deployment
 
-> Deployment to Render / Railway will be performed after explicit user approval.
+You can deploy this Spring Boot API to Render instantly using the button below:
+
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/prisha-sh/bfhl-api)
+
+### Manual Deployment Steps:
+1. Log into [Render](https://render.com).
+2. Click **New +** and select **Blueprint**.
+3. Connect your GitHub repository `bfhl-api`.
+4. Click **Approve/Apply** to start the build.
+5. Once deployed, the API will be live at `https://bfhl-api-xxxx.onrender.com/bfhl` (Render will generate a unique sub-domain if `bfhl-api` is taken).
+
