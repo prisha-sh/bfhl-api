@@ -16,6 +16,7 @@ import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -24,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * MockMvc slice tests for {@link BfhlController}.
  * Loads only the web layer; the service layer is mocked.
  */
-@WebMvcTest(BfhlController.class)
+@WebMvcTest({BfhlController.class, HealthController.class})
 class BfhlControllerTest {
 
     @Autowired
@@ -156,5 +157,27 @@ class BfhlControllerTest {
                         .content("{\"data\":[\"a\"]}"))
                 .andDo(print())
                 .andExpect(status().isUnsupportedMediaType());
+    }
+
+    // ── GET Endpoints ──────────────────────────────────────────────────────────
+
+    @Test
+    @DisplayName("GET /bfhl returns 200 and standard operation code")
+    void shouldReturn200OnGetBfhl() throws Exception {
+        mockMvc.perform(get("/bfhl"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.operation_code").value(1));
+    }
+
+    @Test
+    @DisplayName("GET /health returns 200 and UP status")
+    void shouldReturn200OnGetHealth() throws Exception {
+        mockMvc.perform(get("/health"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.status").value("UP"));
     }
 }

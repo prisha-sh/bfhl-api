@@ -7,10 +7,13 @@ import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Map;
 
 /**
  * REST Controller exposing the BFHL data processing endpoint.
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
  * <p>Routes:
  * <ul>
  *   <li>POST /bfhl — Process mixed data array and return classified results</li>
+ *   <li>GET /bfhl — Return standard operation code</li>
  * </ul>
  */
 @RestController
@@ -44,5 +48,16 @@ public class BfhlController {
         log.info("POST /bfhl — received {} items", request.getData().size());
         BfhlResponse response = bfhlService.process(request);
         return ResponseEntity.ok(response);
+    }
+
+    /**
+     * Simple GET endpoint returning status/operation code.
+     *
+     * @return HTTP 200 with operation_code: 1
+     */
+    @GetMapping
+    public ResponseEntity<Map<String, Integer>> getOperationCode() {
+        log.info("GET /bfhl — returning operation code");
+        return ResponseEntity.ok(Map.of("operation_code", 1));
     }
 }
