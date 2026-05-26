@@ -72,6 +72,26 @@ public class GlobalExceptionHandler {
                 .body(new ErrorResponse(false, "Content-Type must be application/json"));
     }
 
+    // ─── Method Not Allowed & Route Not Found ──────────────────────────────────
+
+    @ExceptionHandler(org.springframework.web.HttpRequestMethodNotSupportedException.class)
+    public ResponseEntity<ErrorResponse> handleMethodNotSupported(
+            org.springframework.web.HttpRequestMethodNotSupportedException ex) {
+        log.error("Method not supported: {}", ex.getMessage());
+        return ResponseEntity
+                .status(HttpStatus.METHOD_NOT_ALLOWED)
+                .body(new ErrorResponse(false, "Method not allowed: " + ex.getMessage()));
+    }
+
+    @ExceptionHandler(org.springframework.web.servlet.NoHandlerFoundException.class)
+    public ResponseEntity<ErrorResponse> handleNoHandlerFound(
+            org.springframework.web.servlet.NoHandlerFoundException ex) {
+        log.error("No handler found: {}", ex.getMessage());
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(new ErrorResponse(false, "Resource not found: " + ex.getRequestURL()));
+    }
+
     // ─── Catch-All ────────────────────────────────────────────────────────────
 
     @ExceptionHandler(Exception.class)

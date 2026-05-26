@@ -180,4 +180,16 @@ class BfhlControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.status").value("UP"));
     }
+
+    @Test
+    @DisplayName("PUT /bfhl returns 405 Method Not Allowed")
+    void shouldReturn405OnUnsupportedMethod() throws Exception {
+        mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put("/bfhl")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"data\":[]}"))
+                .andDo(print())
+                .andExpect(status().isMethodNotAllowed())
+                .andExpect(jsonPath("$.is_success").value(false))
+                .andExpect(jsonPath("$.message").value(org.hamcrest.Matchers.containsString("Method not allowed")));
+    }
 }
